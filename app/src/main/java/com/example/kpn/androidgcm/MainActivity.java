@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         tv_token=(TextView) findViewById(R.id.tv_token);
         broadcastReceiver= new BroadcastReceiver() {
 
@@ -26,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
                 tv_token.setText(SharedPrefManager.getInstance(getApplicationContext()).getToken());
             }
         };
+
+        if(SharedPrefManager.getInstance(this)!=null){
+            tv_token.setText(SharedPrefManager.getInstance(this).getToken());
+            Log.i("fcm message","Saved Token : "+SharedPrefManager.getInstance(this).getToken());
+        }
+
 
         registerReceiver(broadcastReceiver,new IntentFilter(MyFirebaseInstanceIdService.TOKEN_BROADCAST));
 
